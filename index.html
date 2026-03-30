@@ -128,11 +128,17 @@ function searchArtikel(){
   if(!a&&!t){d.innerHTML='<div class="es"><span class="ei">🔎</span><div class="et">Zoek een artikel</div><div class="es2">Voer een artikelnummer of typenaam in</div></div>';return}
   const res=INVENTORY.filter(r=>(!a||r[0].toLowerCase().includes(a))&&(!t||r[1].toLowerCase().includes(t)));
   if(!res.length){d.innerHTML='<div class="nr"><span>🤷</span><p>Geen resultaten</p></div>';return}
-  const lim=200,shown=res.slice(0,lim);
-  let h=`<div class="rc"><div class="rh">Resultaten <span class="cp">${res.length}${res.length>lim?'+':''}</span></div>`;
-  for(const r of shown){
-    const sec=getSection(r[2]);
-    h+=`<div class="rr"><div class="ri">${getIcon(r[1])}</div><div class="rn"><div class="rna">${r[1]}</div><div class="rar">Art.nr. ${r[0]}</div>${sec?`<span class="st">${sec}</span>`:''}</div><div class="zc"><span class="zcl">Zone</span><span class="zcn">${r[2]}</span></div></div>`;
+  const groups={};
+  for(const r of res){const k=r[0];if(!groups[k])groups[k]={name:r[1],zones:[]};groups[k].zones.push(r[2]);}
+  const uniq=Object.entries(groups);
+  const lim=200,shown=uniq.slice(0,lim);
+  let h=`<div class="zib"><div class="zin">${res.length}</div><div><div class="zil">Totaal tellingen</div><div class="zis">${uniq.length} uniek artikel${uniq.length!==1?'en':''}</div></div></div>`;
+  h+=`<div class="rc"><div class="rh">Resultaten <span class="cp">${uniq.length}${uniq.length>lim?'+':''}</span></div>`;
+  for(const[artnr,v] of shown){
+    const zonesUniq=[...new Set(v.zones)].sort((a,b)=>a-b);
+    const sec=zonesUniq.length===1?getSection(zonesUniq[0]):null;
+    const zoneBadges=zonesUniq.map(z=>`<div class="zc" style="padding:3px 10px;min-width:auto"><span class="zcl">Zone</span><span class="zcn" style="font-size:16px">${z}</span></div>`).join('');
+    h+=`<div class="rr"><div class="ri">${getIcon(v.name)}</div><div class="rn"><div class="rna">${v.name}</div><div class="rar">Art.nr. ${artnr}</div>${sec?`<span class="st">${sec}</span>`:''}<div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:7px">${zoneBadges}</div></div><div class="zc" style="background:var(--text2)"><span class="zcl">Telling</span><span class="zcn">${v.zones.length}</span></div></div>`;
   }
   d.innerHTML=h+'</div>';
 }
