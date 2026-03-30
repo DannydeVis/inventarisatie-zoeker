@@ -137,7 +137,7 @@ function searchArtikel(){
   for(const[artnr,v] of shown){
     const zoneCounts={};for(const z of v.zones)zoneCounts[z]=(zoneCounts[z]||0)+1;
     const zoneSorted=Object.entries(zoneCounts).sort((a,b)=>a[0]-b[0]);
-    const zoneRows=zoneSorted.map(([z,c])=>{const sec=getSection(parseInt(z));return`<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid var(--sep)"><div><span style="font-size:13px;font-weight:700;color:var(--text)">Zone ${z}</span>${sec?`<span style="font-size:12px;color:var(--text3);margin-left:8px">${sec}</span>`:''}</div><div class="zc" style="padding:3px 10px;min-width:auto"><span class="zcl">Telling</span><span class="zcn" style="font-size:16px">${c}</span></div></div>`;}).join('');
+    const zoneRows=zoneSorted.map(([z,c])=>{const sec=getSection(parseInt(z));return`<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid var(--sep)"><div><span style="font-size:13px;font-weight:700;color:var(--text)">Zone ${z}</span>${sec?`<span style="font-size:12px;color:var(--text3);margin-left:8px">${sec}</span>`:''}</div><div class="zc" style="padding:3px 10px;min-width:auto"><span class="zcl">Aantal</span><span class="zcn" style="font-size:16px">${c}</span></div></div>`;}).join('');
     h+=`<div class="rr" style="flex-direction:column;align-items:stretch"><div style="display:flex;align-items:center;gap:14px;padding-bottom:${zoneSorted.length?'4px':'0'}"><div class="ri">${getIcon(v.name)}</div><div class="rn"><div class="rna">${v.name}</div><div class="rar">Art.nr. ${artnr}</div></div></div>${zoneRows}</div>`;
   }
   d.innerHTML=h+'</div>';
@@ -153,7 +153,7 @@ function searchZone(){
   let h=`<div class="zib"><div class="zin">${res.length}</div><div><div class="zil">Geteld in zone ${z}</div>${sec?`<div class="zis">${sec}</div>`:''}</div></div>`;
   const counts={};for(const r of res){const k=r[0];counts[k]=(counts[k]||{name:r[1],count:0});counts[k].count++;}
   const uniq=Object.entries(counts);
-  h+=`<div class="rc"><div class="rh">Zone ${z} <span class="cp">${res.length}</span></div><table class="zt"><thead><tr><th>Art.nr.</th><th>Merk / Type</th><th style="text-align:center">Telling</th></tr></thead><tbody>`;
+  h+=`<div class="rc"><div class="rh">Zone ${z} <span class="cp">${res.length}</span></div><table class="zt"><thead><tr><th>Art.nr.</th><th>Merk / Type</th><th style="text-align:center">Aantal</th></tr></thead><tbody>`;
   for(const[artnr,v] of uniq) h+=`<tr><td>${artnr}</td><td>${v.name}</td><td style="text-align:center;font-weight:700;color:var(--red)">${v.count}</td></tr>`;
   d.innerHTML=h+'</tbody></table></div>';
 }
