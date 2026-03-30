@@ -135,10 +135,10 @@ function searchArtikel(){
   let h=`<div class="zib"><div class="zin">${res.length}</div><div><div class="zil">Totaal tellingen</div><div class="zis">${uniq.length} uniek artikel${uniq.length!==1?'en':''}</div></div></div>`;
   h+=`<div class="rc"><div class="rh">Resultaten <span class="cp">${uniq.length}${uniq.length>lim?'+':''}</span></div>`;
   for(const[artnr,v] of shown){
-    const zonesUniq=[...new Set(v.zones)].sort((a,b)=>a-b);
-    const sec=zonesUniq.length===1?getSection(zonesUniq[0]):null;
-    const zoneBadges=zonesUniq.map(z=>`<div class="zc" style="padding:3px 10px;min-width:auto"><span class="zcl">Zone</span><span class="zcn" style="font-size:16px">${z}</span></div>`).join('');
-    h+=`<div class="rr"><div class="ri">${getIcon(v.name)}</div><div class="rn"><div class="rna">${v.name}</div><div class="rar">Art.nr. ${artnr}</div>${sec?`<span class="st">${sec}</span>`:''}<div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:7px">${zoneBadges}</div></div><div class="zc" style="background:var(--text2)"><span class="zcl">Telling</span><span class="zcn">${v.zones.length}</span></div></div>`;
+    const zoneCounts={};for(const z of v.zones)zoneCounts[z]=(zoneCounts[z]||0)+1;
+    const zoneSorted=Object.entries(zoneCounts).sort((a,b)=>a[0]-b[0]);
+    const zoneBadges=zoneSorted.map(([z,c])=>`<div class="zc" style="padding:4px 10px;min-width:auto"><span class="zcl">Zone ${z}</span><span class="zcn" style="font-size:18px">${c}×</span></div>`).join('');
+    h+=`<div class="rr"><div class="ri">${getIcon(v.name)}</div><div class="rn"><div class="rna">${v.name}</div><div class="rar">Art.nr. ${artnr}</div><div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:7px">${zoneBadges}</div></div></div>`;
   }
   d.innerHTML=h+'</div>';
 }
