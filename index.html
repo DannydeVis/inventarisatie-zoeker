@@ -137,8 +137,8 @@ function searchArtikel(){
   for(const[artnr,v] of shown){
     const zoneCounts={};for(const z of v.zones)zoneCounts[z]=(zoneCounts[z]||0)+1;
     const zoneSorted=Object.entries(zoneCounts).sort((a,b)=>a[0]-b[0]);
-    const zoneBadges=zoneSorted.map(([z,c])=>`<div class="zc" style="padding:4px 10px;min-width:auto"><span class="zcl">Zone ${z}</span><span class="zcn" style="font-size:18px">${c}×</span></div>`).join('');
-    h+=`<div class="rr"><div class="ri">${getIcon(v.name)}</div><div class="rn"><div class="rna">${v.name}</div><div class="rar">Art.nr. ${artnr}</div><div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:7px">${zoneBadges}</div></div></div>`;
+    const zoneRows=zoneSorted.map(([z,c])=>{const sec=getSection(parseInt(z));return`<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid var(--sep)"><div><span style="font-size:13px;font-weight:700;color:var(--text)">Zone ${z}</span>${sec?`<span style="font-size:12px;color:var(--text3);margin-left:8px">${sec}</span>`:''}</div><div class="zc" style="padding:3px 10px;min-width:auto"><span class="zcl">Telling</span><span class="zcn" style="font-size:16px">${c}</span></div></div>`;}).join('');
+    h+=`<div class="rr" style="flex-direction:column;align-items:stretch"><div style="display:flex;align-items:center;gap:14px;padding-bottom:${zoneSorted.length?'4px':'0'}"><div class="ri">${getIcon(v.name)}</div><div class="rn"><div class="rna">${v.name}</div><div class="rar">Art.nr. ${artnr}</div></div></div>${zoneRows}</div>`;
   }
   d.innerHTML=h+'</div>';
 }
