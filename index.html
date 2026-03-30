@@ -150,7 +150,7 @@ function searchZone(){
   if(isNaN(z)){d.innerHTML='<div class="nr"><span>❓</span><p>Voer een geldig zonenummer in</p></div>';return}
   const sec=getSection(z),res=INVENTORY.filter(r=>r[2]===z);
   if(!res.length){d.innerHTML=`<div class="nr"><span>🤷</span><p>Geen artikelen in zone ${z}</p></div>`;return}
-  let h=sec?`<div class="zib"><div class="zin">${z}</div><div><div class="zil">Locatie</div><div class="zis">${sec}</div></div></div>`:'';
+  let h=`<div class="zib"><div class="zin">${res.length}</div><div><div class="zil">Geteld in zone ${z}</div>${sec?`<div class="zis">${sec}</div>`:''}</div></div>`;
   const counts={};for(const r of res){const k=r[0];counts[k]=(counts[k]||{name:r[1],count:0});counts[k].count++;}
   const uniq=Object.entries(counts);
   h+=`<div class="rc"><div class="rh">Zone ${z} <span class="cp">${res.length}</span></div><table class="zt"><thead><tr><th>Art.nr.</th><th>Merk / Type</th><th style="text-align:center">Telling</th></tr></thead><tbody>`;
